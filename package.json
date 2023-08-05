@@ -1,0 +1,15 @@
+{
+  "name": "electricity-prices",
+  "version": "1.0.0",
+  "description": "Retrieve day-ahead electricity prices from ENTSO-E",
+  "scripts": {
+    "start": "node ./bin/export-electricity-prices.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthias Roeckl",
+  "license": "MIT",
+  "dependencies": {
+    "entsoe-api-client": "^0.9.6"
+  }
+}
+
