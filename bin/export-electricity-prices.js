@@ -2,12 +2,22 @@
 
 const QueryPublication = require("entsoe-api-client").QueryPublication;
 const Area = require("entsoe-api-client").Area;
+const { parseArgs } = require("node:util");
 
 queryEntsoe(getConfig()).then(function (entsoeResponse) {
+  const options = {
+    format: {
+      type: "string",
+      short: "f",
+      default: "csv",
+    },
+  };
+  const { values } = parseArgs({ options });
+
   const priceDocument = entsoeResponse[0];
   const timeSeries = priceDocument.timeseries;
   const pricesPerHour = extractPricesPerHour(timeSeries);
-  print(pricesPerHour);
+  print(pricesPerHour, values.format);
 });
 
 function getConfig() {
@@ -51,9 +61,17 @@ function isFullHour(startDate) {
   return startDate.getMinutes() === 0;
 }
 
-function print(pricesPerHour) {
-  const sortedDateTimes = Object.keys(pricesPerHour).sort((date1, date2) => new Date(date1) - new Date(date2));
-  sortedDateTimes.forEach((dateTime) => {
-    console.log("%s;%d", new Date(dateTime).toISOString(), pricesPerHour[dateTime].price);
-  });
+function print(pricesPerHour, format) {
+  if (format === "json") {
+    console.log(
+      Object.keys(pricesPerHour).map((key) => {
+        return { dateTime: new Date(key), price: pricesPerHour[key].price };
+      })
+    );
+  } else {
+    const sortedDateTimes = Object.keys(pricesPerHour).sort((date1, date2) => new Date(date1) - new Date(date2));
+    sortedDateTimes.forEach((dateTime) => {
+      console.log("%s;%d", new Date(dateTime).toISOString(), pricesPerHour[dateTime].price);
+    });
+  }
 }

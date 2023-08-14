@@ -30,11 +30,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npm start > electricity-prices_DE_2023.csv
+      - run: npm start -- --format csv > electricity-prices_DE_2023.csv
+        env:
+          API_KEY: ${{ secrets.ENTSOE_API_KEY }}
+      - run: npm start -- --format json > electricity-prices_DE_2023.json
         env:
           API_KEY: ${{ secrets.ENTSOE_API_KEY }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: "2023-08"
-          files: electricity-prices_DE_2023.csv
+          files: |
+            electricity-prices_DE_2023.csv
+            electricity-prices_DE_2023.json
