@@ -63,11 +63,12 @@ function isFullHour(startDate) {
 
 function print(pricesPerHour, format) {
   if (format === "json") {
-    console.dir(
-      Object.keys(pricesPerHour).map((key) => {
-        return { dateTime: new Date(key), price: pricesPerHour[key].price };
-      }),
-      { maxArrayLength: null }
+    console.log(
+      JSON.stringify(
+        Object.keys(pricesPerHour).map((key) => {
+          return { dateTime: new Date(key), price: pricesPerHour[key].price };
+        })
+      )
     );
   } else {
     const sortedDateTimes = Object.keys(pricesPerHour).sort((date1, date2) => new Date(date1) - new Date(date2));
