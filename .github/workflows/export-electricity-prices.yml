@@ -39,7 +39,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "2023-08"
+          tag_name: "2023-09"
           files: |
             electricity-prices_DE_2023.csv
             electricity-prices_DE_2023.json
